@@ -1,0 +1,4 @@
+Add baz
+
+Added baz.txt to the repo
+
