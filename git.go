@@ -48,7 +48,9 @@ func (g *git) Clone(src string, dst string) []string {
 }
 
 func (g *git) Update() []string {
-	return []string{"pull", "-f"}
+	// --rebase fixes the local repo if upstream
+	// was rebased.
+	return []string{"pull", "-f", "--rebase"}
 }
 
 func (g *git) ParseRevisions(_ string, data []byte) ([]*Revision, error) {
