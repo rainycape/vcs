@@ -72,6 +72,10 @@ func TestGit(t *testing.T) {
 	testVcs(t, "git", "fe645e3acddd21db9633c6abeffe2671342d1b08")
 }
 
+func TestGitBare(t *testing.T) {
+	testVcs(t, "git.bare", "fe645e3acddd21db9633c6abeffe2671342d1b08")
+}
+
 func TestMercurial(t *testing.T) {
 	testVcs(t, "hg", "55a0ce7ec898b893e63823c188340d676254eb00")
 }

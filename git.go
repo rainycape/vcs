@@ -1,6 +1,10 @@
 package vcs
 
 import (
+	"bytes"
+	"io/ioutil"
+	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -17,6 +21,20 @@ func (g *git) Cmd() string {
 
 func (g *git) Dir() string {
 	return ".git"
+}
+
+func (g *git) Test(dir string) bool {
+	gitDir := filepath.Join(dir, g.Dir())
+	if st, err := os.Stat(gitDir); err == nil && st.IsDir() {
+		return true
+	}
+	// Check a bare git repo
+	cfg := filepath.Join(dir, "config")
+	data, err := ioutil.ReadFile(cfg)
+	if err == nil {
+		return bytes.Contains(data, []byte("bare = true"))
+	}
+	return false
 }
 
 func (g *git) Head() string {

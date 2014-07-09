@@ -183,13 +183,19 @@ func (v *VCS) Tags() ([]*Tag, error) {
 func New(dir string) (*VCS, error) {
 	cur := dir
 	for {
+		abs, err := filepath.Abs(cur)
+		if err != nil {
+			return nil, err
+		}
 		for _, v := range interfaces {
-			d := filepath.Join(cur, v.Dir())
-			if st, err := os.Stat(d); err == nil && st.IsDir() {
-				abs, err := filepath.Abs(cur)
-				if err != nil {
-					return nil, err
+			if tester, ok := v.(Tester); ok {
+				if tester.Test(abs) {
+					return &VCS{Dir: abs, iface: v}, nil
 				}
+				continue
+			}
+			d := filepath.Join(abs, v.Dir())
+			if st, err := os.Stat(d); err == nil && st.IsDir() {
 				return &VCS{Dir: abs, iface: v}, nil
 			}
 		}

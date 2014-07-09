@@ -18,6 +18,15 @@ type Interface interface {
 	ParseTags(data []byte) ([]*Tag, error)
 }
 
+// Tester is an optional interface which Interfaces might
+// implement to test if a dir contains a repository which
+// they can understand.
+type Tester interface {
+	// Test returns true if the absolute directory dir
+	// contains a repository.
+	Test(dir string) bool
+}
+
 var (
 	interfaces []Interface
 )
